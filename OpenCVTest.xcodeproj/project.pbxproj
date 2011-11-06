@@ -24,6 +24,7 @@
 		54BBAF4F0F0414C200568ED9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54BBAF4E0F0414C200568ED9 /* AudioToolbox.framework */; };
 		54ED862C123C4A8B00ED9656 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54ED862B123C4A8B00ED9656 /* Accelerate.framework */; };
 		54FC5BDE0E3EB3EB00F48645 /* laughing_man.png in Resources */ = {isa = PBXBuildFile; fileRef = 54FC5BDD0E3EB3EB00F48645 /* laughing_man.png */; };
+		FA735C6F146650B300231CAD /* UIImage+OpenCV.m in Sources */ = {isa = PBXBuildFile; fileRef = FA735C6E146650B300231CAD /* UIImage+OpenCV.m */; };
 		FA97765B14652DC100A36BEE /* libopencv_calib3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9775CC146523FD00A36BEE /* libopencv_calib3d.a */; };
 		FA97765C14652DC100A36BEE /* libopencv_contrib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9775DA146523FD00A36BEE /* libopencv_contrib.a */; };
 		FA97765D14652DC100A36BEE /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9775CE146523FD00A36BEE /* libopencv_core.a */; };
@@ -157,6 +158,8 @@
 		54ED862B123C4A8B00ED9656 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		54FC5BDD0E3EB3EB00F48645 /* laughing_man.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laughing_man.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA735C6D146650B300231CAD /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
+		FA735C6E146650B300231CAD /* UIImage+OpenCV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+OpenCV.m"; sourceTree = "<group>"; };
 		FA9775B3146523FC00A36BEE /* OpenCV.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenCV.xcodeproj; path = "../../../../Users/alex/Downloads/OpenCV-2.3.1/build_with_xcode/OpenCV.xcodeproj"; sourceTree = "<group>"; };
 		FAD233CB146534A800CA4B7B /* haarcascade_frontalface_default.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_default.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +200,8 @@
 				1D3623250D0F684500981E51 /* OpenCVTestAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* OpenCVTestViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* OpenCVTestViewController.m */,
+				FA735C6D146650B300231CAD /* UIImage+OpenCV.h */,
+				FA735C6E146650B300231CAD /* UIImage+OpenCV.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 				540723DE0E3DD25B00B598A2 /* main.m in Sources */,
 				540723DF0E3DD25B00B598A2 /* OpenCVTestAppDelegate.m in Sources */,
 				540723E00E3DD25B00B598A2 /* OpenCVTestViewController.m in Sources */,
+				FA735C6F146650B300231CAD /* UIImage+OpenCV.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

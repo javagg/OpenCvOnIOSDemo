@@ -2,7 +2,7 @@
 
 #import <opencv2/imgproc/imgproc_c.h>
 #import <opencv2/objdetect/objdetect.hpp>
-//x#import "imgproc_c.h"
+#import "UIImage+OpenCV.h"
 
 @implementation OpenCVTestViewController
 @synthesize imageView;
@@ -11,47 +11,6 @@
 	AudioServicesDisposeSystemSoundID(alertSoundID);
 	[imageView dealloc];
 	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark OpenCV Support Methods
-
-// NOTE you SHOULD cvReleaseImage() for the return value when end of the code.
-- (IplImage *)CreateIplImageFromUIImage:(UIImage *)image {
-	CGImageRef imageRef = image.CGImage;
-
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	IplImage *iplimage = cvCreateImage(cvSize(image.size.width, image.size.height), IPL_DEPTH_8U, 4);
-	CGContextRef contextRef = CGBitmapContextCreate(iplimage->imageData, iplimage->width, iplimage->height,
-													iplimage->depth, iplimage->widthStep,
-													colorSpace, kCGImageAlphaPremultipliedLast|kCGBitmapByteOrderDefault);
-	CGContextDrawImage(contextRef, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
-	CGContextRelease(contextRef);
-	CGColorSpaceRelease(colorSpace);
-
-	IplImage *ret = cvCreateImage(cvGetSize(iplimage), IPL_DEPTH_8U, 3);
-	cvCvtColor(iplimage, ret, CV_RGBA2BGR);
-	cvReleaseImage(&iplimage);
-
-	return ret;
-}
-
-// NOTE You should convert color mode as RGB before passing to this function
-- (UIImage *)UIImageFromIplImage:(IplImage *)image {
-	NSLog(@"IplImage (%d, %d) %d bits by %d channels, %d bytes/row %s", image->width, image->height, image->depth, image->nChannels, image->widthStep, image->channelSeq);
-
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	NSData *data = [NSData dataWithBytes:image->imageData length:image->imageSize];
-	CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
-	CGImageRef imageRef = CGImageCreate(image->width, image->height,
-										image->depth, image->depth * image->nChannels, image->widthStep,
-										colorSpace, kCGImageAlphaNone|kCGBitmapByteOrderDefault,
-										provider, NULL, false, kCGRenderingIntentDefault);
-	UIImage *ret = [UIImage imageWithCGImage:imageRef];
-	CGImageRelease(imageRef);
-	CGDataProviderRelease(provider);
-	CGColorSpaceRelease(colorSpace);
-	return ret;
 }
 
 #pragma mark -
@@ -87,7 +46,8 @@
 		cvSetErrMode(CV_ErrModeParent);
 
 		// Create grayscale IplImage from UIImage
-		IplImage *img_color = [self CreateIplImageFromUIImage:imageView.image];
+        IplImage *img_color = imageView.image.IplImage;
+        
 		IplImage *img = cvCreateImage(cvGetSize(img_color), IPL_DEPTH_8U, 1);
 		cvCvtColor(img_color, img, CV_BGR2GRAY);
 		cvReleaseImage(&img_color);
@@ -106,7 +66,7 @@
 			}
 		}
 		cvReleaseImage(&img2);
-		imageView.image = [self UIImageFromIplImage:image];
+		imageView.image = [UIImage imageWithIplImage:image];
 		cvReleaseImage(&image);
 
 		[self hideProgressIndicator];
@@ -121,8 +81,7 @@
 	if(imageView.image) {
 		cvSetErrMode(CV_ErrModeParent);
 
-		IplImage *image = [self CreateIplImageFromUIImage:imageView.image];
-		
+		IplImage *image = imageView.image.IplImage;
 		// Scaling down
 		IplImage *small_image = cvCreateImage(cvSize(image->width/2,image->height/2), IPL_DEPTH_8U, 3);
 		cvPyrDown(image, small_image, CV_GAUSSIAN_5x5);
@@ -184,9 +143,7 @@
 
 - (IBAction)loadImage:(id)sender {
 	if(!actionSheetAction) {
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-																 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-														otherButtonTitles:@"Use Photo from Library", @"Take Photo with Camera", @"Use Default Lena", nil];
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Photo from Library", @"Take Photo with Camera", @"Use Default Lena", nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		actionSheetAction = ActionSheetToSelectTypeOfSource;
 		[actionSheet showInView:self.view];
@@ -213,9 +170,7 @@
 - (IBAction)faceDetect:(id)sender {
 	cvSetErrMode(CV_ErrModeParent);
 	if(imageView.image && !actionSheetAction) {
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-																 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-														otherButtonTitles:@"Bounding Box", @"Laughing Man", nil];
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Bounding Box", @"Laughing Man", nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		actionSheetAction = ActionSheetToSelectTypeOfMarks;
 		[actionSheet showInView:self.view];
